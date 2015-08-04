@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="debateApp">
+<head>
+	<!-- Angular -->
+	<script src="bower_components/angular/angular.min.js"></script>
+	
+	<!-- Chance -->
+	<script type="text/javascript" src="bower_components/chance/chance.js"></script>
+	
+	<!-- Socket.io -->
+	<script src="/socket.io/socket.io.js"></script>
+	
+	<!-- Firebase -->
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+	
+</head>
+<body ng-controller="debateController">
+<ul>
+	<li ng-repeat="user in users">{{user.username}}</li>
+</ul>
+
+<ul>
+	<li ng-repeat="candidate in candidates">{{candidate.name}}</li>
+</ul>
+<textarea ng-model="user.username"></textarea>
+
+</body>
+
+<script src="app.js"></script>
+
+</html>
