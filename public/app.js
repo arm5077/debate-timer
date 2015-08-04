@@ -1,6 +1,10 @@
 angular.module("debateApp", ['pc035860.scrollWatch'])
 .controller("debateController", ["$scope", function($scope){
 	
+	// Check if they want cool or lame version
+	if(!getParameterByName("sega"))
+		$scope.lame = true;
+		
 	// Make socket object
 	var socket = io();
 
@@ -101,9 +105,11 @@ angular.module("debateApp", ['pc035860.scrollWatch'])
 	return {
 		link: function(scope, element, attr) {
 			element.on('load', function(){
-				pixel = new ClosePixelation( element[0], [
-					{ shape: 'square', resolution: 4, size: 0, offset: 0, alpha: 1 }
-				]);	
+				if( !scope.lame ){
+					pixel = new ClosePixelation( element[0], [
+						{ shape: 'square', resolution: 4, size: 0, offset: 0, alpha: 1 }
+					]);
+				}
 			});
 		}
 	};	
@@ -149,3 +155,11 @@ angular.module("debateApp", ['pc035860.scrollWatch'])
 		}
 	};	
 });
+
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

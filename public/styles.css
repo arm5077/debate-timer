@@ -1,14 +1,22 @@
 @import url(http://fonts.googleapis.com/css?family=Press+Start+2P);
 @import url(http://fonts.googleapis.com/css?family=VT323);
+@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
 
 body {
 	font-family: "Press Start 2P", sans-serif;
 	font-size: 12pt;
+	padding: 0;
+	margin: 0;
 }
 
-canvas.portrait {
+body.lame {
+	font-family: "Roboto", sans-serif;
+}
+
+canvas.portrait, img.portrait {
 	border-radius: 50%;
 	margin-bottom: 10px;
+	background-color: #eee;
 }
 
 .header {
@@ -23,6 +31,7 @@ canvas.portrait {
 	font-size: 20pt;
 	margin-bottom: 15px;
 }
+
 
 .username input {
 	border: 0;
@@ -48,14 +57,21 @@ canvas.portrait {
 	position: relative;
 	border-left: 5px dashed #404040;
     padding-left: 20px;
+	padding-top: 10px;
 }
 
+	.chatPane.floating {
+		position: fixed;
+		top: 0;
+		right: 56px;
+	}
+	
 #chatPane ul {
 	list-style: none;
 	padding: 0;
 	font-family: "VT323", sans-serif;
 	height: 70%;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #chatPane ul li {
@@ -72,7 +88,7 @@ canvas.portrait {
 	height: 10%;
 	width: 80%;
 	position: absolute;
-	bottom: 0;
+	bottom: 5%;
 	left: 5%;
 	padding: 2% 5%;
 	background-color: #222222;
@@ -107,11 +123,61 @@ ul.candidates {
 
 .candidates .candidate {
 	display: inline-block;
-	margin: 0px 10px 10px 0px;
+	margin: 0px 10px 20px 0px;
 	text-align: center;
 	cursor: pointer;
 }
 
-.candidates .candidate.talking canvas {
+.candidates .candidate.talking canvas, .candidates .candidate.talking img  {
 	background-color: red;
+}
+
+.lame .header {
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0px 0px 10px black;
+}
+
+.lame .title {
+	font-weight: 900;
+	font-size: 30pt;
+}
+
+.lame .username input {
+	border: 1px dotted #404040;
+	font-family: Roboto, sans-serif;
+	padding: 5px;
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.lame .subtitle {
+	font-size: 14pt;
+}
+
+.lame #chatPane {
+	border-left: 1px solid #ccc;
+}
+
+.lame #chatPane li {
+	font-family: Roboto, sans-serif;
+	font-size:11pt;
+	font-weight: 300;
+	margin-bottom: 15px;
+}
+
+.lame #chatText{
+	background-color: #eee;
+	border: 1px solid #ccc;
+	font-family: Roboto, sans-serif;
+	color: #999;
+}
+
+.lame img.portrait {
+	border: 10px solid #eee;
+	background-color: white-space: normal/pre/nowrap;;
+}
+
+.lame .candidates .candidate.talking img {
+	background-color: #EA463D;
+	border: 10px solid #952326;
 }

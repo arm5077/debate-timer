@@ -24,34 +24,34 @@
 	<link rel="stylesheet" href="styles.css" />
 	
 </head>
-<body ng-controller="debateController">
+<body ng-controller="debateController" ng-class="{lame: lame == true} ">
 
-<div class = "header">
-	<div class = "title">Debate party!!</div>
+<div class = "header" id = "header">
+	<div class = "title">Debate party</div>
 	<div class = "username" ng-click="user.username = ''">
-		Your username (click to change): <input ng-model="user.username"></input>
+		Your username (click and type to change): <input ng-model="user.username"></input>
 	</div> 
 </div>
 
 <div class = "candidatePane" size-to-sibling sibling="chatPane">
-	<div class="subtitle">Click a candidate when they start talking, and click again when they ~finally~ stop!</div>
+	<div class="subtitle">Click a candidate when they start talking, and click again when they stop!</div>
 	
 	<ul class = "candidates">
 		<li class = "candidate" ng-repeat="candidate in candidates" ng-click="handleTalking(candidate)" ng-class="{talking: candidate.talking}">
 			<div class="counter" ng-style="{visibility: countTalking(candidate) == 0 ? 'hidden' : 'visible'}">{{ countTalking(candidate) }} listening</div>
 			<img class="portrait" pixelate ng-src="img/{{ candidate.name.substr(candidate.name.indexOf(' ') + 1, 100) }}.png">
-			<div>{{candidate.name}}</div>	
+			<div><strong>{{candidate.name}}<strong></div>	
 		</li>
 	</ul>
 </div>
 
-<div chat-pane class = "chatPane" id = "chatPane">
-	"chat-room"
+<div chat-pane class = "chatPane" id = "chatPane" scroll-watch="{ from: 0, to: -1 }" sw-class="{'regular': $positive < document.getElementById('header').offsetHeight, 'floating': $positive > 172}">
+	<span ng-bind="(lame == true) ? 'the ongoing feed' : 'chat room'"></span>
 	<ul chats>
 		<li ng-repeat="chat in chats" ng-class="{high: chat.priority == 'high', low: chat.priority == 'low'}">{{chat.user.username}}: {{chat.chatText}}</li>
 	</ul>
 	<form ng-submit="sendChat(chatText, 'high')">
-		<input id="chatText" type="text" ng-model="chatText" />
+		<input id="chatText" type="text" ng-model="chatText" placeholder="Send a message"/>
 		<input type="submit" id="submit" value="Submit" ng-show="false" />
 	</form>
 </div>
