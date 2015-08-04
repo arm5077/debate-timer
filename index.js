@@ -74,7 +74,7 @@ io.on('connection', function(socket){
 	socket.on("update_records", function(keymark){
 		// Get 
 		candidate = candidates[candidates.map(function(d){return d.name}).indexOf(keymark.candidate)];
-		var current = moment.tz(new Date().getTime(), "America/New_York");
+		var current = moment.tz(keymark.timestamp, "America/New_York");
 		if(keymark.action == "add"){
 			if( !candidate.records)
 				candidate.records = [];
@@ -89,8 +89,8 @@ io.on('connection', function(socket){
 			console.log("remoooooove it");
 			candidate.records.forEach(function(record){
 				if(record.user.username == keymark.user.username && !record.end){
-					record.end = moment.tz(new Date, "America/New_York").valueOf();
-					record.end_formatted = moment.tz(new Date, "America/New_York").format("HH:mm:ss");
+					record.end = moment.tz(keymark.timestamp, "America/New_York").valueOf();
+					record.end_formatted = moment.tz(keymark.timestamp, "America/New_York").format("HH:mm:ss");
 					
 					// Send chat notification
 					chats.push({user: {username: "debatebot"}, chatText: keymark.user.username + " says " + candidate.name + " has stopped talking.", priority: "low" });

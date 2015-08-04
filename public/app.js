@@ -68,10 +68,10 @@ angular.module("debateApp", ['pc035860.scrollWatch'])
 		if( !candidate.talking ){
 			console.log("making the candidate talk!");
 			candidate.talking = true;
-			socket.emit("update_records", {candidate: candidate.name, user: $scope.user, action: "add" });
+			socket.emit("update_records", {candidate: candidate.name, user: $scope.user, action: "add", timestamp: new Date() });
 		}
 		else {
-			socket.emit("update_records", {candidate: candidate.name, user: $scope.user, action: "remove"});
+			socket.emit("update_records", {candidate: candidate.name, user: $scope.user, action: "remove", timestamp: new Date() });
 			candidate.talking = false;
 		}	
 	}
