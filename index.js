@@ -23,7 +23,11 @@ fs.readFile("candidates.json", function(err, data){
 
 app.use("/", express.static(__dirname + "/public/"));
 
+// Initialize list of users 
 var userlist = [];
+
+// Initialize list of chats
+var chats = [];
 
 io.on('connection', function(socket){
 	
@@ -31,9 +35,12 @@ io.on('connection', function(socket){
 	
 	// Send user the presidential candidates
 	io.emit("get_candidates", candidates);
-	
+		
 	// Say goodbye when they leave and remove them from the list
 	socket.on("disconnect", function(){
+		chats.push({user: {username: "debatebot"}, chatText: thisUser.username + " has left :-(", priority: "low" });
+		io.emit("receive_chats", chats);
+		
 		userlist.splice(userlist.indexOf(thisUser), 1);
 		io.emit('send_list_to_everyone', userlist);
 		console.log("user left!")
@@ -48,7 +55,11 @@ io.on('connection', function(socket){
 			// Add user to list and update everybody
 			thisUser = user;
 			userlist.push(thisUser);
-			console.log(userlist)
+			console.log(userlist);
+			
+			// Greet them in the chat
+			chats.push({user: {username: "debatebot"}, chatText: thisUser.username + " has joined! Welcome!", priority: "low" });
+			io.emit("receive_chats", chats);
 			
 			// Send the  complete user list out;
 			io.emit('send_list_to_everyone', userlist);
@@ -61,6 +72,7 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on("update_records", function(keymark){
+		// Get 
 		candidate = candidates[candidates.map(function(d){return d.name}).indexOf(keymark.candidate)];
 		var current = moment.tz(new Date().getTime(), "America/New_York");
 		if(keymark.action == "add"){
@@ -69,18 +81,30 @@ io.on('connection', function(socket){
 			candidate.records.push({ start: current.valueOf(), 
 					start_formatted: current.format("HH:mm:ss"), 
 					user: keymark.user });
+			
+			// Send chat notification
+			chats.push({user: {username: "debatebot"}, chatText: keymark.user.username + " says " + candidate.name + " is talking.", priority: "low" });
+			
 		} else {
 			console.log("remoooooove it");
 			candidate.records.forEach(function(record){
-				if(record.user.id == keymark.user.id && !record.end){
+				if(record.user.username == keymark.user.username && !record.end){
 					record.end = moment.tz(new Date, "America/New_York").valueOf();
 					record.end_formatted = moment.tz(new Date, "America/New_York").format("HH:mm:ss");
-				}
 					
+					// Send chat notification
+					chats.push({user: {username: "debatebot"}, chatText: keymark.user.username + " says " + candidate.name + " has stopped talking.", priority: "low" });
+				}
 			});
 		}
 		io.emit("update_record", candidate.name, candidate.records);
+		io.emit("receive_chats", chats);
 		debateRef.set(candidates);
+	});
+	
+	socket.on("new_chat", function(chat){
+		chats.push(chat);
+		io.emit("receive_chats", chats);
 	});
 	
 });

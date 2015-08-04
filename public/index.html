@@ -3,6 +3,7 @@
 <head>
 	<!-- Angular -->
 	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-scroll-watch/src/angular-scroll-watch.js"></script>
 	
 	<!-- Chance -->
 	<script type="text/javascript" src="bower_components/chance/chance.js"></script>
@@ -13,28 +14,47 @@
 	<!-- Firebase -->
 	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 	
+	<!-- Close-Pixelate -->
+	<script src='js/close-pixelate.js'></script>
+	
+	<!-- Cookie.js -->
+	<script src='bower_components/js-cookie/src/js.cookie.js'></script>
+	
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="styles.css" />
+	
 </head>
 <body ng-controller="debateController">
-<ul>
-	<li ng-repeat="user in users">{{user.username}}</li>
-</ul>
 
-<ul>
-	<li ng-repeat="candidate in candidates" ng-click="handleTalking(candidate)">
-		<div>{{candidate.name}}</div>
-		<ul>
-			<li ng-repeat="record in candidate.records">
-				<div>{{record.start}}: {{record.user.username }} says he's talking.</div>
-				<ul>
-					<li ng-if="record.end">{{record.end}}: Stopped talking.</li>
-				</ul>
-			</li>
+<div class = "header">
+	<div class = "title">Debate party!!</div>
+	<div class = "username" ng-click="user.username = ''">
+		Your username (click to change): <input ng-model="user.username"></input>
+	</div> 
+</div>
 
-		</ul>
+<div class = "candidatePane" size-to-sibling sibling="chatPane">
+	<div class="subtitle">Click a candidate when they start talking, and click again when they ~finally~ stop!</div>
 	
-	</li>
-</ul>
-<textarea ng-model="user.username"></textarea>
+	<ul class = "candidates">
+		<li class = "candidate" ng-repeat="candidate in candidates" ng-click="handleTalking(candidate)" ng-class="{talking: candidate.talking}">
+			<div class="counter" ng-style="{visibility: countTalking(candidate) == 0 ? 'hidden' : 'visible'}">{{ countTalking(candidate) }} listening</div>
+			<img class="portrait" pixelate ng-src="img/{{ candidate.name.substr(candidate.name.indexOf(' ') + 1, 100) }}.png">
+			<div>{{candidate.name}}</div>	
+		</li>
+	</ul>
+</div>
+
+<div chat-pane class = "chatPane" id = "chatPane">
+	"chat-room"
+	<ul chats>
+		<li ng-repeat="chat in chats" ng-class="{high: chat.priority == 'high', low: chat.priority == 'low'}">{{chat.user.username}}: {{chat.chatText}}</li>
+	</ul>
+	<form ng-submit="sendChat(chatText, 'high')">
+		<input id="chatText" type="text" ng-model="chatText" />
+		<input type="submit" id="submit" value="Submit" ng-show="false" />
+	</form>
+</div>
 
 </body>
 

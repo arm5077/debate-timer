@@ -1,0 +1,117 @@
+@import url(http://fonts.googleapis.com/css?family=Press+Start+2P);
+@import url(http://fonts.googleapis.com/css?family=VT323);
+
+body {
+	font-family: "Press Start 2P", sans-serif;
+	font-size: 12pt;
+}
+
+canvas.portrait {
+	border-radius: 50%;
+	margin-bottom: 10px;
+}
+
+.header {
+	text-align: center;
+	padding-bottom: 30px;
+	padding-top: 20px;
+	margin-bottom: 30px;
+	border-bottom: 5px dashed #404040;
+}
+
+.title {
+	font-size: 20pt;
+	margin-bottom: 15px;
+}
+
+.username input {
+	border: 0;
+	font-family: "Press Start 2P", sans-serif;
+	font-size: 12pt;
+	border-bottom: black 4px solid;
+	padding-bottom: 3px;
+	text-align: center;
+}
+
+.username input:focus {
+	outline-width: 0;
+}
+
+.candidatePane{ 
+
+}
+
+.chatPane {
+	width: 300px;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	border-left: 5px dashed #404040;
+    padding-left: 20px;
+}
+
+#chatPane ul {
+	list-style: none;
+	padding: 0;
+	font-family: "VT323", sans-serif;
+	height: 70%;
+	overflow: scroll;
+}
+
+#chatPane ul li {
+	margin-bottom: 5px;
+	font-size: 12pt;
+}
+
+	#chatPane ul li.low {
+		color: #999;
+	}
+
+#chatText {
+	border: 0;
+	height: 10%;
+	width: 80%;
+	position: absolute;
+	bottom: 0;
+	left: 5%;
+	padding: 2% 5%;
+	background-color: #222222;
+	color: white;
+	font-family: "VT323", sans-serif;
+	font-size: 12pt;
+}
+
+
+.candidatePane {
+	display: inline-block;
+}
+
+.subtitle {
+	width: 80%;
+	margin: 0px auto 10px;
+	text-align: center;
+	padding: 10px;
+	background-color: #404040;
+	color: white;
+	line-height: 1.4em;
+}
+
+ul.candidates {
+	list-style: none;
+	text-align: center
+}
+
+.counter {
+	margin-bottom: 10px;
+}
+
+.candidates .candidate {
+	display: inline-block;
+	margin: 0px 10px 10px 0px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.candidates .candidate.talking canvas {
+	background-color: red;
+}

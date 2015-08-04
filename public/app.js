@@ -1,12 +1,23 @@
-angular.module("debateApp", [])
+angular.module("debateApp", ['pc035860.scrollWatch'])
 .controller("debateController", ["$scope", function($scope){
+	
+	// Make socket object
 	var socket = io();
 
-	$scope.user = {
-		id: chance.string(),
-		username: chance.name()
-	};
+	// Make user object
+	$scope.user = {};
 
+	// Initialize chat
+	$scope.chats = [];
+
+	// See if user has logged in before
+	$scope.user.id = Cookies.get('debate_id') || chance.string();
+	$scope.user.username = Cookies.get('debate_username') || chance.name();
+
+	Cookies.set('debate_id', $scope.user.id, { expires: 7 });
+	Cookies.set('debate_username', $scope.user.username, { expires: 7 });
+	
+	// Initialize users
 	$scope.users = [];
 	username_change();
 	
@@ -42,6 +53,11 @@ angular.module("debateApp", [])
 		$scope.candidates[$scope.candidates.map(function(d){return d.name}).indexOf(name)].records = records;
 		$scope.$apply();
 	});
+	
+	socket.on("receive_chats", function(chats){
+		$scope.chats = chats;
+		$scope.$apply();
+	});
 
 	
 	$scope.handleTalking = function(candidate){
@@ -53,14 +69,83 @@ angular.module("debateApp", [])
 		else {
 			socket.emit("update_records", {candidate: candidate.name, user: $scope.user, action: "remove"});
 			candidate.talking = false;
-		}
-			
-		
+		}	
 	}
 
+	$scope.countTalking = function(candidate){
+		if(candidate.records){
+			return candidate.records.filter(function(record){ 
+				return !record.end 
+			}).length;
+		}
+		
+		return 0;
+		
+	}
+	
+	$scope.sendChat = function(chatText, priority){
+		console.log(chatText);
+		socket.emit('new_chat', {user: $scope.user, chatText: chatText, priority: priority});
+		$scope.chatText = "";
+	}
+	
+	
+
 	function username_change(){
-		console.log("burritio");
+		Cookies.set('debate_username', $scope.user.username, { expires: 7 });
 		socket.emit('username_change', $scope.user);
 	}
 
-}]);	
+}])
+.directive("pixelate", function() {
+	return {
+		link: function(scope, element, attr) {
+			element.on('load', function(){
+				pixel = new ClosePixelation( element[0], [
+					{ shape: 'square', resolution: 4, size: 0, offset: 0, alpha: 1 }
+				]);	
+			});
+		}
+	};	
+})
+.directive("sizeToSibling", function() {
+	return {
+		link: function(scope, element, attr) {
+			resize();
+			window.addEventListener("resize", resize);
+			function resize(){
+				element.css({
+					width: (window.innerWidth - document.getElementById(attr.sibling).offsetWidth - 60) + "px"
+				});
+			}
+
+		}
+	};	
+
+})
+.directive("chatPane", function() {
+	return {
+		link: function(scope, element, attr) {
+			resize();
+			window.addEventListener("resize", resize);
+			function resize(){
+				element.css({
+					height: window.innerHeight + "px"
+				});
+			}
+
+		}
+	};	
+})
+.directive("chats", function() {
+	return {
+		link: function(scope, element, attr) {
+			scope.$watch("chats", function(){
+				setTimeout(function(){
+					element[0].scrollTop = 1000000000000;
+				}, 250)
+
+			});
+		}
+	};	
+});
