@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var fs = require("fs");
 var request = require("request");
 var Firebase = require("firebase");
+var moment = require("moment-timezone");
 
 // Connect to firebase
 connection = new Firebase("https://debate-counter.firebaseio.com/");
@@ -57,8 +58,29 @@ io.on('connection', function(socket){
 			userlist[index].username = user.username;
 			io.emit('username_changed', {oldUsername: oldUsername, newUsername: user.username});
 		}
-		
-
+	});
+	
+	socket.on("update_records", function(keymark){
+		candidate = candidates[candidates.map(function(d){return d.name}).indexOf(keymark.candidate)];
+		var current = moment.tz(new Date().getTime(), "America/New_York");
+		if(keymark.action == "add"){
+			if( !candidate.records)
+				candidate.records = [];
+			candidate.records.push({ start: current.valueOf(), 
+					start_formatted: current.format("HH:mm:ss"), 
+					user: keymark.user });
+		} else {
+			console.log("remoooooove it");
+			candidate.records.forEach(function(record){
+				if(record.user.id == keymark.user.id && !record.end){
+					record.end = moment.tz(new Date, "America/New_York").valueOf();
+					record.end_formatted = moment.tz(new Date, "America/New_York").format("HH:mm:ss");
+				}
+					
+			});
+		}
+		io.emit("update_record", candidate.name, candidate.records);
+		debateRef.set(candidates);
 	});
 	
 });

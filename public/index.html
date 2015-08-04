@@ -20,7 +20,19 @@
 </ul>
 
 <ul>
-	<li ng-repeat="candidate in candidates">{{candidate.name}}</li>
+	<li ng-repeat="candidate in candidates" ng-click="handleTalking(candidate)">
+		<div>{{candidate.name}}</div>
+		<ul>
+			<li ng-repeat="record in candidate.records">
+				<div>{{record.start}}: {{record.user.username }} says he's talking.</div>
+				<ul>
+					<li ng-if="record.end">{{record.end}}: Stopped talking.</li>
+				</ul>
+			</li>
+
+		</ul>
+	
+	</li>
 </ul>
 <textarea ng-model="user.username"></textarea>
 
