@@ -10,7 +10,7 @@ angular.module("debateApp", [])
 	$scope.users = [];
 	username_change();
 	
-	$scope.$watch("user", username_change);
+	$scope.$watch("user.username", username_change);
 	
 	socket.on("get_candidates", function(candidates){
 
@@ -59,6 +59,7 @@ angular.module("debateApp", [])
 	}
 
 	function username_change(){
+		console.log("burritio");
 		socket.emit('username_change', $scope.user);
 	}
 
