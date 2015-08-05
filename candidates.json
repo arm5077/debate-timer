@@ -1,50 +1,32 @@
 [
-  {
-    "name":"Jeb Bush"
-  },
-  {
-    "name":"Ben Carson"
-  },
-  {
-    "name":"Chris Christie"
-  },
-  {
-    "name":"Ted Cruz"
-  },
-  {
-    "name":"Carly Fiorina"
-  },
-  {
-    "name":"Lindsey Graham"
-  },
-  {
-    "name":"Mike Huckabee"
-  },
-  {
-    "name":"Bobby Jindal"
-  },
-  {
-    "name":"John Kasich"
-  },
-  {
-    "name":"George Pataki"
-  },
-  {
-    "name":"Rand Paul"
-  },
-  {
-    "name":"Rick Perry"
-  },
-  {
-    "name":"Marco Rubio"
-  },
-  {
-    "name":"Rick Santorum"
-  },
-  {
-    "name":"Scott Walker"
-  },
-  {
-    "name":"Donald Trump"
-  }
+    {
+        "name": "Chris Christie"
+    },
+    {
+        "name": "Marco Rubio"
+    },
+    {
+        "name": "Ben Carson"
+    },
+    {
+        "name": "Scott Walker"
+    },
+    {
+        "name": "Donald Trump"
+    },
+    {
+        "name": "Jeb Bush"
+    },
+    {
+        "name": "Mike Huckabee"
+    },
+    {
+        "name": "Ted Cruz"
+    },
+    {
+        "name": "Rand Paul"
+    },
+    {
+        "name": "John Kasich"
+    }
 ]

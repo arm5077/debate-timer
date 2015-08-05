@@ -17,6 +17,8 @@ canvas.portrait, img.portrait {
 	border-radius: 50%;
 	margin-bottom: 10px;
 	background-color: #eee;
+	width: 100px;
+	height: 100px;
 }
 
 .header {
