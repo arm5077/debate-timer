@@ -34,7 +34,7 @@ io.on('connection', function(socket){
 	var thisUser = {};
 	
 	// Send user the presidential candidates
-	io.emit("get_candidates", candidates);
+	io.emit("get_candidates", candidates, thisUser);
 		
 	// Say goodbye when they leave and remove them from the list
 	socket.on("disconnect", function(){

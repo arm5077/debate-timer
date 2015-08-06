@@ -27,11 +27,12 @@ angular.module("debateApp", ['pc035860.scrollWatch'])
 	
 	$scope.$watch("user.username", username_change);
 	
-	socket.on("get_candidates", function(candidates){
-
-
-		$scope.candidates = candidates;
-		$scope.$apply();
+	socket.on("get_candidates", function(candidates, user){
+		if(user = $scope.user){
+			$scope.candidates = candidates;
+			$scope.$apply();
+		}
+			
 	});
 	
 	socket.on("add_user", function(user){
