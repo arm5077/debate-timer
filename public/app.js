@@ -25,9 +25,13 @@ angular.module("debateApp", ['pc035860.scrollWatch'])
 	$scope.users = [];
 	username_change();
 	
+	// Send user info to server
+	socket.emit("new_user", {user: $scope.user});
+	
 	$scope.$watch("user.username", username_change);
 	
 	socket.on("get_candidates", function(candidates, user){
+		console.log(user);
 		if(user = $scope.user){
 			$scope.candidates = candidates;
 			$scope.$apply();

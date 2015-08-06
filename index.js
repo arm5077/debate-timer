@@ -34,8 +34,12 @@ io.on('connection', function(socket){
 	var thisUser = {};
 	
 	// Send user the presidential candidates
-	io.emit("get_candidates", candidates, thisUser);
-		
+	
+	socket.on("new_user", function(packet){
+		io.emit("get_candidates", candidates, packet.user);
+		thisUser = packet.user;
+	});
+	
 	// Say goodbye when they leave and remove them from the list
 	socket.on("disconnect", function(){
 		chats.push({user: {username: "debatebot"}, chatText: thisUser.username + " has left :-(", priority: "low" });
